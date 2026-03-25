@@ -1,0 +1,15 @@
+# --- Residuos de Editores (Vim) ---
+.*.swp
+.*.swo
+*~
+.netrwhist
+undo/
+
+# --- Extensiones de Sistema ---
+.DS_Store
+Thumbs.db
+
+# --- Carpetas de Desarrollo ---
+.vscode/
+node_modules/
+.clasp.json
