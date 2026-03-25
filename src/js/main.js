@@ -1,23 +1,37 @@
+// 1. La URL de tu motor de ingeniería en Google
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx3s-IJ67GvwrNiwxXvX7F25o1Rx8Un8NTb4hoIUe_TcjzRKcGC5TbbVOgo9z3GNWYjCA/exec";
+
 document.getElementById('lead-form').addEventListener('submit', function(e) {
-    e.preventDefault(); // Evita que la página se recargue
+    e.preventDefault(); 
     
     const btn = e.target.querySelector('button');
     const originalText = btn.innerText;
     
-    btn.innerText = "Enviando...";
+    // Feedback visual para el cliente
+    btn.innerText = "ENVIANDO SOLICITUD...";
     btn.disabled = true;
 
+    // 2. Preparar los datos para el envío
     const formData = new FormData(this);
-    const data = Object.fromEntries(formData.entries());
 
-    // Aquí conectaremos la URL de tu Google Apps Script más adelante
-    console.log("Datos capturados para ingeniería:", data);
-    
-    // Simulación de envío (esto lo cambiaremos por un fetch real)
-    setTimeout(() => {
-        alert("Solicitud enviada con éxito. Un ingeniero se contactará con usted.");
+    // 3. Envío REAL a Google Apps Script
+    fetch(WEB_APP_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Crucial para evitar bloqueos de seguridad de Google
+        body: new URLSearchParams(formData)
+    })
+    .then(() => {
+        // Éxito: El correo ya va en camino a tu bandeja
+        alert("¡Recibido! Un ingeniero de Volt & Data revisará su caso a la brevedad.");
+        this.reset();
+    })
+    .catch(error => {
+        console.error('Error de red:', error);
+        alert("Hubo un problema de conexión. Por favor, contáctenos por WhatsApp.");
+    })
+    .finally(() => {
+        // Restaurar el botón pase lo que pase
         btn.innerText = originalText;
         btn.disabled = false;
-        this.reset();
-    }, 1500);
+    });
 });
