@@ -4,7 +4,9 @@
 *~
 .netrwhist
 undo/
-
+*.un~
+*~
+.*.un
 # --- Extensiones de Sistema ---
 .DS_Store
 Thumbs.db
