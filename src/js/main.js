@@ -1,5 +1,5 @@
 // 1. La URL de tu motor de ingeniería en Google
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJiW5SXzEmls7-JXfY_rzKaoK78SbGxdHmTOZvft5G689MXmVxbEIoG6asDZW31d4bvg/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzDLo1IfmuTL7IOkr1zTwjyYmMp9JVA0i4h6Kuj8b7ia_rJybUzagmFjFSpW5Tppb7JIg/exec";
 
 document.getElementById('lead-form').addEventListener('submit', function(e) {
     e.preventDefault(); 
