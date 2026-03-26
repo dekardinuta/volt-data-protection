@@ -1,16 +1,14 @@
-# Ignorar todo por defecto
-**/**
-
-# Permitir solo los archivos necesarios del backend
-!src/gas/code.gs
-!src/gas/appsscript.json
-
-# Ignorar archivos de sistema y Git
-.git/
-node_modules/
-.clasp.json
-README.md
-index.html
-assets/
-src/css/
+# Ignorar carpetas de la web (GitHub Pages)
 src/js/
+src/css/
+node_modules/
+.git/
+
+# Ignorar archivos raiz
+index.html
+404.html
+README.md
+.clasp.json
+
+# Los archivos en src/gas/ NO se ignoran por defecto
+#
