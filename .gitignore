@@ -1,12 +1,11 @@
 # --- Residuos de Editores (Vim) ---
-.*.swp
+.*.swp[a-p]
 .*.swo
-*~
 .netrwhist
 undo/
 *.un~
 *~
-.*.un
+.*.un~
 # --- Extensiones de Sistema ---
 .DS_Store
 Thumbs.db
@@ -16,3 +15,4 @@ Thumbs.db
 node_modules/
 .clasp.json
 src/gas/appsscript.json
+.index.html.un~
