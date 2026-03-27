@@ -14,31 +14,29 @@ body {
     color: var(--text-main);
     font-family: 'Outfit', sans-serif;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 /* --- HEADER --- */
 header {
     padding: 4rem 2rem;
     text-align: center;
-    position: relative;
 }
 
-/* Título bicolor */
 h1, h2, h3 {
     font-weight: 900;
     text-transform: uppercase;
-    color: #ffffff; /* Color base Blanco */
+    color: #ffffff;
     letter-spacing: -1px;
 }
 
-/* La palabra resaltada en Verde */
 h1 span, h3 span {
     color: var(--neon-green);
     text-shadow: rgba(204, 255, 0, 0.3) 0px 0px 20px;
 }
 
 header p {
-    font-size: 1.4rem; /* Más grande como pediste */
+    font-size: 1.4rem;
     color: var(--text-dim);
     margin-top: 1rem;
     font-weight: 300;
@@ -48,14 +46,14 @@ header p {
 header::after {
     content: "";
     display: block;
-    width: 110%; /* Sobrepasa un poco el contenido */
+    max-width: 1000px;
+    width: 90%;
     height: 1px;
-    background: var(--border); /* Casi imperceptible */
+    background: var(--border); 
     margin: 2rem auto 0;
-    transform: translateX(-5%); /* La centra aunque sea más ancha */
 }
 
-/* --- CARDS --- */
+/* --- CARDS (Con Hover Neon Recuperado) --- */
 .container { padding: 2rem; max-width: 1000px; margin: auto; }
 
 .services-grid {
@@ -70,17 +68,28 @@ header::after {
     padding: 2rem;
     border-radius: 12px;
     border: 1px solid var(--border);
+    transition: all 0.3s ease; /* Transición suave para el brillo */
+    cursor: pointer;
 }
 
-/* --- BOTONES (Ancho automático, no total) --- */
+/* AQUÍ ESTÁ LO QUE RECUPERAMOS: */
+.card:hover { 
+    border-color: var(--neon-green); 
+    box-shadow: 0 0 15px rgba(204, 255, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+.card ul { list-style: none; margin-top: 1rem; color: var(--text-dim); }
+
+/* --- BOTONES (Ancho automático) --- */
 button, .btn-whatsapp {
     background-color: var(--neon-green);
     color: black;
     font-weight: 900;
     border: none;
-    padding: 1rem 2.5rem; /* Padding lateral para que no ocupe todo */
-    width: auto;           /* Ancho según el texto */
-    display: inline-block; /* Permite que el ancho sea automático */
+    padding: 1rem 2rem;
+    width: auto;
+    display: inline-block; 
     cursor: pointer;
     text-transform: uppercase;
     font-family: 'Outfit', sans-serif;
@@ -90,18 +99,10 @@ button, .btn-whatsapp {
     margin-top: 1rem;
 }
 
-/* Centrar el botón del formulario */
-#lead-form {
-    text-align: left; /* Contenido a la izquierda */
-}
-
-/* Para que el botón de envío no sea gigante */
 #lead-form button {
-    width: max-content; 
-    margin-top: 1rem;
+    width: fit-content;
 }
 
-/* Botón WhatsApp en el footer centrado */
 footer {
     text-align: center;
     padding: 4rem;
