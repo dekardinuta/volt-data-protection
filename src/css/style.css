@@ -1,81 +1,155 @@
+/* 1. Variables Globales (Aquí controlas los colores de toda la web) */
 :root {
-    --bg-dark: #0d1117;       /* Azul casi negro (profesional) */
-    --bg-card: #161b22;       /* Gris grafito para secciones */
-    --accent: #ffb100;        /* Ámbar / Amarillo seguridad */
-    --text-main: #f0f6fc;     /* Blanco puro */
-    --text-dim: #8b949e;      /* Gris para detalles */
+    --neon-green: rgb(204, 255, 0);   /* El verde de tu captura */
+    --bg-dark: #0a0a0a;             /* Fondo casi negro para que resalte el neon */
+    --bg-card: #161b22;             /* Gris grafito para las tarjetas */
+    --text-main: #f0f6fc;
+    --text-dim: #8b949e;
     --border: #30363d;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* 2. Reset y Tipografía Base */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
 
 body {
     background-color: var(--bg-dark);
     color: var(--text-main);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Outfit', sans-serif; /* La fuente moderna que elegiste */
     line-height: 1.6;
 }
 
-header {
-    padding: 2rem;
-    text-align: center;
-    border-bottom: 2px solid var(--accent);
-    background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+/* 3. Títulos con Efecto Neón */
+h1, h2, h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--neon-green);
+    text-shadow: rgba(204, 255, 0, 0.3) 0px 0px 20px; /* Brillo suave */
+    letter-spacing: -1px;
 }
 
-header h1 { color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
+header {
+    padding: 3rem 2rem;
+    text-align: center;
+    border-bottom: 2px solid var(--neon-green);
+    background: linear-gradient(180deg, #161b22 0%, #0a0a0a 100%);
+}
 
-.container { padding: 1.5rem; max-width: 800px; margin: auto; }
+header h1 { 
+    font-size: 2.5rem; 
+    margin-bottom: 0.5rem;
+}
 
-/* Grid de Pilares */
+/* 4. Contenedor y Tarjetas */
+.container { 
+    padding: 1.5rem; 
+    max-width: 900px; 
+    margin: auto; 
+}
+
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
+    margin-top: 2rem;
     margin-bottom: 3rem;
 }
 
 .card {
     background: var(--bg-card);
-    padding: 1.5rem;
-    border-radius: 8px;
+    padding: 2rem;
+    border-radius: 12px;
     border: 1px solid var(--border);
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
-.card:hover { border-color: var(--accent); transform: translateY(-5px); }
+.card:hover { 
+    border-color: var(--neon-green); 
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(204, 255, 0, 0.1);
+}
 
-.card h3 { color: var(--accent); margin-bottom: 1rem; }
+.card ul {
+    list-style: none;
+    margin-top: 1rem;
+    color: var(--text-dim);
+}
 
-/* Formulario Industrial */
+.card li::before {
+    content: "→ ";
+    color: var(--neon-green);
+}
+
+/* 5. Formulario Profesional */
+#contacto {
+    margin-top: 4rem;
+}
+
 #lead-form {
     background: var(--bg-card);
-    padding: 2rem;
-    border-radius: 8px;
-    border-top: 4px solid var(--accent);
-}
-
-label { display: block; margin-bottom: 0.5rem; color: var(--text-dim); }
-
-input, select, textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 1.5rem;
-    background: #0d1117;
+    padding: 2.5rem;
+    border-radius: 12px;
     border: 1px solid var(--border);
-    color: white;
-    border-radius: 4px;
+    border-top: 4px solid var(--neon-green); /* Línea superior neón */
 }
 
-button {
-    background: var(--accent);
-    color: #000;
-    border: none;
-    padding: 1rem 2rem;
+label { 
+    display: block; 
+    margin-bottom: 0.5rem; 
+    color: var(--neon-green); 
     font-weight: bold;
-    width: 100%;
-    cursor: pointer;
+    font-size: 0.9rem;
     text-transform: uppercase;
 }
 
-button:hover { background: #e6a000; }
+input, select, textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 1.5rem;
+    background: #000;
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--neon-green);
+}
+
+/* 6. Botones (El corazón del diseño) */
+button, .btn-whatsapp {
+    background-color: var(--neon-green);
+    color: black;
+    font-weight: 900;
+    border: none;
+    padding: 1.2rem;
+    width: 100%;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: 'Outfit', sans-serif;
+    border-radius: 6px;
+    transition: 0.3s;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 1rem;
+}
+
+button:hover, .btn-whatsapp:hover {
+    box-shadow: 0 0 25px var(--neon-green);
+    transform: scale(1.02);
+    filter: brightness(1.1);
+}
+
+footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
