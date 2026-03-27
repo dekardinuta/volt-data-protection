@@ -154,7 +154,21 @@ button:hover, .btn-whatsapp:hover {
 footer {
     text-align: center;
     padding: 6rem 2rem;
-    border-top: 1px solid var(--border);
+    position: relative;
 }
 
-footer p { margin-bottom: 1.5rem; color: var(--text-dim); }
+footer::before { 
+    content: "";
+    display: block;
+    max-width: 1000px;
+    width: 95%;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto 3rem; 
+}
+
+footer {
+    border-top: none;
+}
+
+
