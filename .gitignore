@@ -16,3 +16,4 @@ node_modules/
 .clasp.json
 src/gas/appsscript.json
 .index.html.un~
+*.un~
