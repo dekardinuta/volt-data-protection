@@ -40,23 +40,20 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    // 4. 📊 GOOGLE SHEETS: Registro en la pestaña específica "Leads"
+// 4. 📊 REGISTRO DE EMERGENCIA
     var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = ss.getSheetByName("Leads"); // <--- Ajuste para tu pestaña renombrada
+    var sheet = ss.getSheets(); // Directo a la primera pestaña, sin nombres.
     
-    if (!sheet) {
-      // Si por alguna razón no la encuentra, intenta en la primera
-      sheet = ss.getSheets();
-    }
+    // Forzamos la escritura en la fila 2 para probar conexión
+    sheet.getRange(sheet.getLastRow() + 1, 1, 1, 5).setValues([[
+      new Date(), 
+      params.tipo || "TEST", 
+      params.specs || "TEST", 
+      params.urgencia || "TEST", 
+      params.contacto || "TEST"
+    ]]);
     
-    sheet.appendRow([
-      new Date(),           // Columna A: Fecha
-      params.tipo,          // Columna B: Servicio
-      params.specs || '',   // Columna C: Detalle técnico
-      params.urgencia || '',// Columna D: Prioridad
-      params.contacto,      // Columna E: WhatsApp/Mail
-      ip                    // Columna F: Auditoría IP
-    ]);
+    SpreadsheetApp.flush();
 
     // 5. 📧 EMAIL: Notificación inmediata de lead calificado
     var asunto = "🚀 NUEVO LEAD: " + params.tipo + " - Volt & Data";
