@@ -1,14 +1,16 @@
-# Ignorar carpetas de la web (GitHub Pages)
-src/js/
-src/css/
-node_modules/
-.git/
+# Ignorar todo lo que sea basura de sistema y editores
+**/*.un~
+**/*.swp
+**/*.swo
+.git/**
+node_modules/**
+.vscode/**
+passwords.txt
 
-# Ignorar archivos raiz
-index.html
-404.html
+# Ignorar la raíz del proyecto (Frontend) para que no suba a Google
+/*.html
+/src/css/**
+/src/js/**
+/assets/**
 README.md
-.clasp.json
-
-# Los archivos en src/gas/ NO se ignoran por defecto
-#
+.gitignore

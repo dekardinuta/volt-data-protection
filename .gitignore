@@ -1,19 +1,28 @@
-# --- Residuos de Editores (Vim) ---
-.*.swp[a-p]
-.*.swo
-.netrwhist
-undo/
-*.un~
-*~
-.*.un~
-# --- Extensiones de Sistema ---
+# --- SEGURIDAD Y CREDENCIALES (NUNCA SUBIR) ---
+.clasp.json
+.clasprc.json
+auth.json
+passwords.txt
+.env
+
+# --- ARCHIVOS TEMPORALES Y BASURA DEL SISTEMA ---
 .DS_Store
 Thumbs.db
-
-# --- Carpetas de Desarrollo ---
-.vscode/
 node_modules/
-.clasp.json
-src/gas/appsscript.json
-.index.html.un~
+.vscode/
+.history/
+
+# --- RESIDUOS DE VIM (Limpieza total de .un~, .swp, etc) ---
+*.swp
+*.swo
 *.un~
+.netrwhist
+undo/
+*~
+.*.un~
+.index.html.un~
+
+# --- ARCHIVOS QUE SÍ DEBEN ESTAR EN GITHUB ---
+# NO ignores index.html, 404.html ni las carpetas src/js o src/css
+# a menos que uses una herramienta de "build" como Vite o Webpack.
+# Como usas GitHub Pages, estos archivos DEBEN ser públicos en el repo.
