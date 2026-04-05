@@ -1,16 +1,5 @@
-# Ignorar todo lo que sea basura de sistema y editores
-**/*.un~
-**/*.swp
-**/*.swo
-.git/**
-node_modules/**
-.vscode/**
-passwords.txt
-
-# Ignorar la raíz del proyecto (Frontend) para que no suba a Google
-/*.html
-/src/css/**
-/src/js/**
-/assets/**
-README.md
-.gitignore
+# .claspignore
+**/**
+!src/**/*.js
+!src/**/*.html
+!appsscript.json

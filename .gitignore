@@ -1,9 +1,11 @@
-# --- SEGURIDAD Y CREDENCIALES (NUNCA SUBIR) ---
+ --- SEGURIDAD Y CREDENCIALES (NUNCA SUBIR) ---
 .clasp.json
+.clasp.staging.json
 .clasprc.json
 auth.json
 passwords.txt
 .env
+.env.local
 
 # --- ARCHIVOS TEMPORALES Y BASURA DEL SISTEMA ---
 .DS_Store
@@ -22,7 +24,14 @@ undo/
 .*.un~
 .index.html.un~
 
-# --- ARCHIVOS QUE SÍ DEBEN ESTAR EN GITHUB ---
-# NO ignores index.html, 404.html ni las carpetas src/js o src/css
-# a menos que uses una herramienta de "build" como Vite o Webpack.
-# Como usas GitHub Pages, estos archivos DEBEN ser públicos en el repo.
+# ===============================================================
+# ARCHIVOS DE PRODUCCIÓN (ESTOS SÍ SE SUBEN A GITHUB)
+# ===============================================================
+# NOTA: En esta arquitectura modular para Google Apps Script, 
+# el frontend se fragmenta en .html para permitir la inyección.
+# No ignorar estos archivos:
+# src/frontend/index.html
+# src/frontend/css.html
+# src/frontend/js.html
+# appsscript.json
+# README.md
