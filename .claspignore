@@ -1,5 +1,8 @@
-# .claspignore
-**/**
-!src/**/*.js
-!src/**/*.html
-!appsscript.json
+# Ignorar documentación y configuración local al hacer 'clasp push'
+**/*.md
+**/*.gitignore
+**/.claspignore
+.git/**
+node_modules/**
+assets/**
+404.html
