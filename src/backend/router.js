@@ -1,15 +1,23 @@
 /**
  * Gestión de Peticiones HTTP
  */
+
 function doGet(e) {
-  // Si decides servir HTML en el futuro, usarías:
-  // return HtmlService.createTemplateFromFile('src/frontend/index').evaluate();
-  
-  return ContentService.createTextOutput(JSON.stringify({
-    status: 'online',
-    version: '2.3-modular',
-    environment: 'production'
-  })).setMimeType(ContentService.MimeType.JSON);
+  try {
+    // Servir el HTML completo con includes procesados
+    const template = HtmlService.createTemplateFromFile('frontend/index');
+    
+    return template.evaluate()
+      .setTitle('Volt & Data Protection | Ingeniería y Seguridad')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .addMetaTag('description', 'Ingeniería especializada en Seguridad Electrónica, Redes y Energía')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+      
+  } catch (error) {
+    console.error('Error en doGet:', error);
+    return ContentService.createTextOutput('Error: ' + error.toString())
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
 }
 
 function doPost(e) {
@@ -37,7 +45,7 @@ function doPost(e) {
       return jsonResponse({ result: 'error', message: MSG_ERROR_DATA });
     }
 
-    // 4. ⚙️ PROCESAMIENTO (Llamada a api.js)
+    // 4. ⚙️ PROCESAMIENTO
     registrarLead(params, ip);
 
     // 5. 🔒 ACTIVAR BLOQUEO
@@ -46,8 +54,16 @@ function doPost(e) {
     return jsonResponse({ result: 'success', message: MSG_SUCCESS });
 
   } catch (error) {
+    console.error('Error en doPost:', error);
     return jsonResponse({ result: 'error', message: error.toString() });
   }
+}
+
+/**
+ * Necesario para inyectar CSS/JS en el index.html
+ */
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
 /**
@@ -56,11 +72,4 @@ function doPost(e) {
 function jsonResponse(data) {
   return ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
-}
-
-/**
- * Necesario para inyectar CSS/JS en el index.html
- */
-function include(filename) {
-  return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
