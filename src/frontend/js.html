@@ -1,39 +1,97 @@
 <script>
-// 1. La URL de tu motor de ingeniería en Google
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzEFzIxmx-Lwv14LPyA5iHkWLmKdRfBhPDS1R0bfida_rvKYkbxJ-tXreNLRAOkFgv8jg/exec";
+// URL de tu motor en Google (SIN espacio al final)
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuXWM7q3e2pAheuUd-EWIkpXpI1UZAwuZZ8JbD0K7nNFObbc1_m5Hbz-rMaQ8eV-PDtg/exec";
 
-document.getElementById('lead-form').addEventListener('submit', function(e) {
-    e.preventDefault(); 
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('lead-form');
     
-    const btn = e.target.querySelector('button');
-    const originalText = btn.innerText;
+    // Crear elemento para mensajes (en lugar de alert feo)
+    const mensajeDiv = document.createElement('div');
+    mensajeDiv.id = 'mensaje-estado';
+    mensajeDiv.style.cssText = `
+        display: none;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        font-weight: bold;
+        text-align: center;
+        transition: all 0.3s ease;
+    `;
+    form.insertBefore(mensajeDiv, form.firstChild);
     
-    // Feedback visual para el cliente
-    btn.innerText = "ENVIANDO SOLICITUD...";
-    btn.disabled = true;
+    function mostrarMensaje(texto, tipo) {
+        mensajeDiv.textContent = texto;
+        mensajeDiv.style.display = 'block';
+        
+        if (tipo === 'exito') {
+            mensajeDiv.style.background = '#00ff9d';
+            mensajeDiv.style.color = '#0a0e27';
+            mensajeDiv.style.boxShadow = '0 0 15px rgba(0, 255, 157, 0.3)';
+        } else {
+            mensajeDiv.style.background = '#ff4444';
+            mensajeDiv.style.color = '#ffffff';
+            mensajeDiv.style.boxShadow = '0 0 15px rgba(255, 68, 68, 0.3)';
+        }
+        
+        // Ocultar después de 5 segundos
+        setTimeout(() => {
+            mensajeDiv.style.opacity = '0';
+            setTimeout(() => {
+                mensajeDiv.style.display = 'none';
+                mensajeDiv.style.opacity = '1';
+            }, 300);
+        }, 5000);
+    }
 
-    // 2. Preparar los datos para el envío
-    const formData = new FormData(this);
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // 🛡️ Protección contra doble envío
+        if (this.dataset.submitting === 'true') {
+            console.log('Envío ya en progreso, ignorando...');
+            return;
+        }
+        
+        this.dataset.submitting = 'true';
+        
+        const btn = this.querySelector('button[type="submit"]');
+        const originalText = btn.innerText;
+        
+        // ⏳ Feedback visual progresivo
+        btn.innerText = "⏳ CONECTANDO...";
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
 
-    // 3. Envío REAL a Google Apps Script
-    fetch(WEB_APP_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Crucial para evitar bloqueos de seguridad de Google
-        body: new URLSearchParams(formData)
-    })
-    .then(() => {
-        // Éxito: El correo ya va en camino a tu bandeja
-        alert("¡Recibido! Un ingeniero de Volt & Data revisará su caso a la brevedad.");
-        this.reset();
-    })
-    .catch(error => {
-        console.error('Error de red:', error);
-        alert("Hubo un problema de conexión. Por favor, contáctenos por WhatsApp.");
-    })
-    .finally(() => {
-        // Restaurar el botón pase lo que pase
-        btn.innerText = originalText;
-        btn.disabled = false;
+        const formData = new FormData(this);
+        
+        // Timer para cambiar mensaje después de 1.5 segundos
+        let mensajeTimer = setTimeout(() => {
+            if (this.dataset.submitting === 'true') {
+                btn.innerText = "📤 ENVIANDO DATOS...";
+            }
+        }, 1500);
+
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: new URLSearchParams(formData)
+        })
+        .then(() => {
+            clearTimeout(mensajeTimer);
+            mostrarMensaje("✅ ¡Recibido! Un ingeniero de Volt & Data revisará su caso a la brevedad.", "exito");
+            this.reset();
+        })
+        .catch(error => {
+            clearTimeout(mensajeTimer);
+            console.error('Error de red:', error);
+            mostrarMensaje("❌ Hubo un problema de conexión. Por favor, contáctenos por WhatsApp.", "error");
+        })
+        .finally(() => {
+            btn.innerText = originalText;
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            this.dataset.submitting = 'false';
+        });
     });
 });
 </script>
