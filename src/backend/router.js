@@ -1,5 +1,6 @@
 /**
- * Gestión de Peticiones HTTP
+ * Gestión de Peticiones HTTP - Volt & Data Protection
+ * Arquitectura Modular: Router
  */
 
 function doGet(e) {
@@ -9,53 +10,66 @@ function doGet(e) {
     
     return template.evaluate()
       .setTitle('Volt & Data Protection | Ingeniería y Seguridad')
-      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
-      .addMetaTag('description', 'Ingeniería especializada en Seguridad Electrónica, Redes y Energía')
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
       
   } catch (error) {
-    console.error('Error en doGet:', error);
-    return ContentService.createTextOutput('Error: ' + error.toString())
+    console.error('❌ Error en doGet:', error);
+    return ContentService.createTextOutput('Error crítico de carga: ' + error.toString())
       .setMimeType(ContentService.MimeType.TEXT);
   }
 }
 
 function doPost(e) {
   try {
-    const params = e.parameter;
+    // 1. 🔄 LECTURA HÍBRIDA (Compatibilidad GitHub Pages / Fetch)
+    let params;
+    if (e.postData && e.postData.contents) {
+      try {
+        params = JSON.parse(e.postData.contents); // Origen: JSON Fetch (GitHub)
+      } catch (err) {
+        params = e.parameter; // Fallback: String no JSON
+      }
+    } else {
+      params = e.parameter; // Origen: Formulario estándar / URL Query
+    }
+
+    // Definición de variables de contexto
     const ip = params.ip || "IP_no_detectada";
     const cache = CacheService.getScriptCache();
     const cacheKey = 'volt_' + ip.replace(/\s/g, '_');
 
-    // 1. 🛡️ HONEYPOT
+    // 2. 🛡️ FILTRO 1: HONEYPOT (Anti-Spam)
     if (params.website && params.website !== "") {
-      return jsonResponse({ result: 'success' });
+      console.warn('🤖 Honeypot activado por IP:', ip);
+      return jsonResponse({ result: 'success' }); // Retorno silencioso
     }
 
-    // 2. ⏳ RATE LIMITING
+    // 3. ⏳ FILTRO 2: RATE LIMITING (Control de saturación)
     if (cache.get(cacheKey)) {
       return jsonResponse({ 
         result: 'error', 
-        message: `Espera ${RATE_LIMIT_MINUTOS} minutos.` 
+        message: `Espera ${CONFIG.RATE_LIMIT_MINUTES} minutos antes de enviar otro reporte.` 
       });
     }
 
-    // 3. ✅ VALIDACIÓN
+    // 4. ✅ FILTRO 3: VALIDACIÓN DE DATOS (Rigor Técnico)
     if (!params.tipo || !params.contacto) {
-      return jsonResponse({ result: 'error', message: MSG_ERROR_DATA });
+      return jsonResponse({ result: 'error', message: MESSAGES.ERROR_DATA });
     }
 
-    // 4. ⚙️ PROCESAMIENTO
+    // 5. ⚙️ PROCESAMIENTO (Capa de Negocio)
+    // Se pasan los parámetros limpios a la API
     registrarLead(params, ip);
 
-    // 5. 🔒 ACTIVAR BLOQUEO
-    cache.put(cacheKey, 'true', RATE_LIMIT_MINUTOS * 60);
+    // 6. 🔒 ACTIVAR BLOQUEO TEMPORAL
+    // Evita duplicados inmediatos en la base de datos
+    cache.put(cacheKey, 'true', CONFIG.RATE_LIMIT_MINUTES * 60);
 
-    return jsonResponse({ result: 'success', message: MSG_SUCCESS });
+    return jsonResponse({ result: 'success', message: MESSAGES.SUCCESS });
 
   } catch (error) {
-    console.error('Error en doPost:', error);
-    return jsonResponse({ result: 'error', message: error.toString() });
+    console.error('❌ Error fatal en doPost:', error.toString());
+    return jsonResponse({ result: 'error', message: 'Falla interna: ' + error.toString() });
   }
 }
 
